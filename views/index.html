@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous"
+    />
+    <link rel="icon" href="static/convert_white.png" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Manrope:200,300,400,500,600,700,800"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+      integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <link rel="manifest" href="/manifest.json">
+    <title>Transcriptor</title>
+  </head>
+
+  <body>
+    <style>
+      * {
+        font-family: "Manrope", sans-serif;
+        transition: all 0.3s ease-in-out;
+      }
+
+      ul,
+      a {
+        text-decoration: none;
+      }
+
+      li {
+        list-style: none;
+      }
+
+      .container {
+        animation: fadeIn;
+        /* referring directly to the animation's @keyframe declaration */
+        animation-duration: 0.5s;
+      }
+
+      .box {
+        position: relative;
+        background: #ffffff;
+        width: 100%;
+      }
+
+      .box-header {
+        color: #444;
+        display: block;
+        padding: 10px;
+        position: relative;
+        border-bottom: 1px solid #f4f4f4;
+        margin-bottom: 10px;
+      }
+
+      .box-tools {
+        position: absolute;
+        right: 10px;
+        top: 5px;
+      }
+
+      .dropzone-wrapper {
+        border: 2px dashed #4e4e4e;
+        color: #92b0b3;
+        position: relative;
+        height: 250px;
+      }
+
+      .dropzone-desc {
+        position: absolute;
+        margin: 0 auto;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        font-size: 16px;
+      }
+
+      .dropzone,
+      .dropzone:focus {
+        position: absolute;
+        outline: none !important;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+        opacity: 0;
+      }
+
+      .dropzone-wrapper:hover,
+      .dropzone-wrapper.dragover {
+        background: #f0f0f0;
+      }
+
+      .preview-zone {
+        display: none;
+        text-align: center;
+      }
+
+      .preview-zone .box {
+        box-shadow: none;
+        border-radius: 0;
+        margin-bottom: 0;
+      }
+
+      .audio-form {
+        display: none;
+      }
+
+      .audio-container {
+        border-right: 1px solid rgb(170, 170, 170);
+      }
+
+      @media only screen and (max-width: 1100px) {
+        .main-container {
+          flex-direction: column;
+        }
+
+        .audio-container {
+          padding-bottom: 20px;
+          border-right: none;
+          border-bottom: 1px solid rgb(170, 170, 170);
+        }
+
+        .video-container {
+          padding-top: 20px;
+        }
+      }
+
+      .loader {
+        display: none;
+        width: 100%;
+        height: 100vh;
+        align-items: center;
+        justify-content: center;
+        background-color: white;
+      }
+
+      .lds-ring {
+        display: inline-block;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 80px;
+        height: 80px;
+      }
+
+      .lds-ring div {
+        box-sizing: border-box;
+        display: block;
+        position: absolute;
+        width: 64px;
+        height: 64px;
+        margin: 8px;
+        border: 8px solid blue;
+        border-radius: 50%;
+        animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+        border-color: blue transparent transparent transparent;
+      }
+
+      .lds-ring div:nth-child(1) {
+        animation-delay: -0.45s;
+      }
+
+      .lds-ring div:nth-child(2) {
+        animation-delay: -0.3s;
+      }
+
+      .lds-ring div:nth-child(3) {
+        animation-delay: -0.15s;
+      }
+
+      @keyframes lds-ring {
+        0% {
+          transform: rotate(0deg);
+        }
+
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      #backBtn {
+        display: none;
+      }
+    </style>
+
+    <div class="loader">
+      <div class="lds-ring">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand d-flex align-items-center" href="/"
+          ><img
+            src="static/convert_white.png"
+            alt=""
+            width="60"
+            height="60"
+            class="d-inline-block align-text-top p-1"
+          />
+          <p class="fs-3 fw-bolder m-0 ms-2">Transcriptor</p>
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavDarkDropdown"
+          aria-controls="navbarNavDarkDropdown"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+          <ul
+            class="navbar-nav ms-auto mb-2 mb-lg-0 d-grid gap-2 d-md-flex justify-content-md-end"
+          >
+            <a href="/profile" class="d-grid me-md-2">
+              <button
+                type="button"
+                id="profileBtn"
+                class="btn fw-bold btn-primary px-5 py-2"
+                aria-current="page"
+              >
+                View Profile
+              </button>
+            </a>
+            <a href="/logout" class="d-grid me-md-2">
+              <button
+                type="button"
+                id="logoutBtn"
+                class="btn fw-bold btn-danger px-5 py-2"
+              >
+                Logout
+              </button>
+            </a>
+            <a href="/google" class="d-grid">
+              <button
+                type="button"
+                class="btn fw-bold btn-primary px-5 py-2"
+                id="loginBtn"
+              >
+                <i class="fab fa-google me-2"></i>
+                Login
+              </button>
+            </a>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <section
+      class="d-flex container mb-5 main-container"
+      style="margin-top: 150px"
+    >
+      <a
+        href="/"
+        class="ms-3 align-items-center"
+        style="height: fit-content"
+        id="backBtn"
+        ><button type="button" class="btn btn-outline-secondary">
+          Back
+        </button></a
+      ><br />
+
+      <div class="container-fluid audio-container">
+        <h1 class="fs-3 mb-4 ps-2 fw-bold">Convert audio</h1>
+        <div class="container d-grid gap-2 d-md-flex justify-content-md-end">
+          <button
+            class="btn btn-primary me-3 fs-5 fw-bold px-3 py-2 my-2"
+            id="audioMic"
+          >
+            <i class="fas fa-microphone me-3"></i>
+            Realtime conversion
+          </button>
+          <button
+            class="btn btn-primary me-3 fs-5 fw-bold px-3 py-2 my-2"
+            id="audioFile"
+          >
+            <i class="fas fa-file-audio me-3"></i>
+            Audio file conversion
+          </button>
+        </div>
+        <div class="audio-form">
+          <div class="container">
+            <div class="mt-3">
+              <button
+                type="submit"
+                class="btn btn-primary py-2 px-4"
+                id="liveToastBtn"
+              >
+                Talk
+              </button>
+            </div>
+            <p class="content my-3 p-3 rounded bg-light text-dark"></p>
+            <button class="btn btn-primary" id="saveBtn" type="button">
+              <span
+                id="btnLoader"
+                class="d-none spinner-border spinner-border-sm"
+                role="status"
+                aria-hidden="true"
+              ></span>
+              Save to database
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="container-fluid video-container">
+        <h1 class="fs-3 mb-4 ps-2 fw-bold">Convert video</h1>
+        <form action="/convert" method="POST" enctype="multipart/form-data">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <div class="preview-zone mb-3">
+                    <div class="box box-solid">
+                      <div class="box-header with-border">
+                        <div><b class="fs-3">Preview</b></div>
+                        <div class="box-tools pull-right">
+                          <button
+                            type="button"
+                            class="btn btn-danger btn-xs remove-preview"
+                          >
+                            <i class="fa fa-times"></i> Reset
+                          </button>
+                        </div>
+                      </div>
+                      <div class="box-body"></div>
+                    </div>
+                  </div>
+                  <div class="dropzone-wrapper">
+                    <div class="dropzone-desc">
+                      <i class="fas fa-file-upload" style="font-size: 3rem"></i>
+                      <p class="mt-2">Choose an audio file or drag it here.</p>
+                    </div>
+                    <input
+                      type="file"
+                      accept="video/mp4,video/x-m4v,video/*"
+                      name="img_logo"
+                      class="dropzone"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mt-3">
+              <button
+                type="submit"
+                class="btn btn-primary disabled pull-right py-2 px-4"
+                id="uploadBtn"
+              >
+                Convert
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <!-- <div
+        class="toast hide align-items-center position-absolute top-80 start-50 translate-middle text-white bg-primary border-0"
+        id="liveToast"
+        role="alert"
+        aria-live="assertive"
+        aria-atomic="true"
+      >
+        <div class="d-flex">
+          <div class="toast-body">Start Talking.</div>
+          <button
+            type="button"
+            class="btn-close btn-close-white me-2 m-auto"
+            data-bs-dismiss="toast"
+            aria-label="Close"
+          ></button>
+        </div>
+      </div> -->
+    </section>
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+      <div
+        id="liveToast"
+        class="toast hide"
+        role="alert"
+        aria-live="assertive"
+        aria-atomic="true"
+      >
+        <div class="toast-header">
+          <strong class="me-auto">Bootstrap</strong>
+          <small>11 mins ago</small>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="toast"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="toast-body">Hello, world! This is a toast message.</div>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      function showAudio() {
+        $("#backBtn").css("display", "block");
+
+        $(".audio-form").css({ display: "block" });
+        $(".video-container").css("display", "none");
+        $(".audio-container").css("border", "none");
+        $("#audioFile").css("display", "none");
+        $("#audioMic").css("display", "none");
+      }
+
+      $("#audioFile").click(function () {
+        showAudio();
+      });
+      $("#audioMic").click(function () {
+        showAudio();
+      });
+
+      function readFile(input) {
+        if (input.files && input.files[0]) {
+          var reader = new FileReader();
+
+          reader.onload = function (e) {
+            var htmlPreview =
+              '<video width="200" src="' +
+              e.target.result +
+              '" />' +
+              "<p>" +
+              input.files[0].name +
+              "</p>";
+            var wrapperZone = $(input).parent();
+            var previewZone = $(input).parent().parent().find(".preview-zone");
+            var boxZone = $(input)
+              .parent()
+              .parent()
+              .find(".preview-zone")
+              .find(".box")
+              .find(".box-body");
+
+            wrapperZone.removeClass("dragover");
+            previewZone.removeClass("hidden");
+            boxZone.empty();
+            boxZone.append(htmlPreview);
+            $("#backBtn").css("display", "block");
+            $(".audio-container").css({ display: "none" });
+            $(".preview-zone").show();
+            $("#uploadBtn").attr("disabled", false);
+            $("#uploadBtn").removeClass("disabled");
+          };
+
+          reader.readAsDataURL(input.files[0]);
+        }
+      }
+
+      function disableBtn() {
+        $("#uploadBtn").attr("disabled", true);
+        $("#uploadBtn").addClass("disabled");
+      }
+
+      function reset(e) {
+        e.wrap("<form>").closest("form").get(0).reset();
+        e.unwrap();
+        disableBtn();
+      }
+
+      $(".dropzone").change(function () {
+        readFile(this);
+      });
+
+      $(".dropzone-wrapper").on("dragover", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        $(this).addClass("dragover");
+      });
+
+      $(".dropzone-wrapper").on("dragleave", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        $(this).removeClass("dragover");
+      });
+
+      $(".remove-preview").on("click", function () {
+        var boxZone = $(this).parents(".preview-zone").find(".box-body");
+        var previewZone = $(this).parents(".preview-zone");
+        var dropzone = $(this).parents(".form-group").find(".dropzone");
+        boxZone.empty();
+        previewZone.addClass("hidden");
+        reset(dropzone);
+        $(".preview-zone").hide();
+        disableBtn();
+      });
+    </script>
+
+    <script type="text/javascript" src="js/client.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

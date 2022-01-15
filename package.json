@@ -1,0 +1,24 @@
+{
+  "name": "voice-converter",
+  "version": "1.0.0",
+  "description": "Conversion of speech to text",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "author": "gowtham",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.24.0",
+    "body-parser": "^1.19.1",
+    "cookie-session": "^2.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^11.0.0",
+    "express": "^4.17.2",
+    "mongoose": "^6.1.6",
+    "nodemon": "^2.0.15",
+    "passport": "^0.5.2",
+    "passport-google-oauth20": "^2.0.0",
+    "video-to-audio": "^1.0.1"
+  }
+}

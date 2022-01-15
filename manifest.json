@@ -1,0 +1,51 @@
+{
+  "name": "Transcriptor",
+  "short_name": "Transcriptor",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFE9D2",
+  "theme_color": "#FFE1C4",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/img/icons/convert_white.png",
+      "type": "image/png",
+      "sizes": "72x72"
+    },
+    {
+      "src": "/img/icons/convert_white (1).png",
+      "type": "image/png",
+      "sizes": "96x96"
+    },
+    {
+      "src": "/img/icons/convert_white (2).png",
+      "type": "image/png",
+      "sizes": "128x128"
+    },
+    {
+      "src": "/img/icons/convert_white (3).png",
+      "type": "image/png",
+      "sizes": "144x144"
+    },
+    {
+      "src": "/img/icons/convert_white (4).png",
+      "type": "image/png",
+      "sizes": "152x152"
+    },
+    {
+      "src": "/img/icons/convert_white (5).png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/img/icons/convert_white (6).png",
+      "type": "image/png",
+      "sizes": "384x384"
+    },
+    {
+      "src": "/img/icons/convert_white (7).png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}
